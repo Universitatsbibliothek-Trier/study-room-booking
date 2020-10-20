@@ -1,4 +1,4 @@
-// Gruppenr‰ume
+// Gruppenr√§ume
 
 Prototype.Browser.IE6 = Prototype.Browser.IE && parseInt(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE")+5)) == 6;
 Prototype.Browser.IE7 = Prototype.Browser.IE && parseInt(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE")+5)) == 7;
@@ -18,7 +18,7 @@ function getMouseCoordinates(event)
 	ymouse=ev.clientY + document.body.scrollTop + document.documentElement.scrollTop;
 
 }
-
+ 
 
 function getBookingForm(date, time, room)
 {
@@ -119,12 +119,21 @@ function bookIt()
 	var bis=$F("bis");
 	var raum=$F("raum");
 	var login_id2=$F("login_id2");
+	var checkTos=$F("agree_tos");
 
 	if(!login_id2) 
 	{
 		$("error-alert").style.display="block";
 		new Ajax.Updater("error-alert", 'ajax_php/loc.php', {
 			  parameters: { key_term: 'type_login_id2' }
+			});
+		return;
+	}
+	else if(!checkTos)
+	{
+		$("error-alert").style.display="block";
+		new Ajax.Updater("error-alert", 'ajax_php/loc.php', {
+			  parameters: { key_term: 'type_check_tos' }
 			});
 		return;
 	}
@@ -172,7 +181,17 @@ function confirmIt()
 	var datum=$F("cf-datum");
 	var von=$F("cf-von");
 	var raum=$F("cf-raum");
+	var checkTos=$F("cf-agree_tos");
 
+	if(!checkTos)
+	{
+		$("c-error-alert").style.display="block";
+		new Ajax.Updater("c-error-alert", 'ajax_php/loc.php', {
+			  parameters: { key_term: 'type_check_tos' }
+			});
+		return;
+	}	
+	
 	var data=datum + "," + von + "," + raum;
 	var url="ajax_php/set_data.php";
 	
@@ -417,5 +436,3 @@ Event.observe(window, 'load', function() {
 	
 });
 */
-
-

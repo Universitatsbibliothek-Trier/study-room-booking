@@ -1,5 +1,5 @@
 %header%
-<h1>Reservierung von Gruppenarbeitspl‰tzen - Login</h1>
+<h1>Reservierung von Gruppenarbeitsr√§umen - Login</h1>
 <fieldset>
 <p id="login-meldung">%meldung%</p>
 <legend>Login</legend>

@@ -14,6 +14,7 @@
 <li>UB Frankfurt</li>
 <li>UB HSU Hamburg</li>
 <li>HLB Fulda</li>
+<li>UB Trier</li>
 
 </ul>
 
@@ -22,7 +23,7 @@
 <p>PHP 5.x, MySQL</p>
 <p>Die Anwendung wurde auf Basis von PHP 5.1.6 und MySQL 5.0.77 entwickelt. <br>
 Beim Betrieb der Anwendung mit PHP 5.2.x und 5.3.[1-6] kommt es zu Darstellungsproblemen (multiples Wiederholen der Buchungstabelle). Diese können in der php.ini durch Setzen des Wertes von pcre.backtrack_limit auf 1000000 behoben werden.</p>
-
+Tests mit Version 7.x haben aber funktioniert.
 <h4>Installation:</h4>
 <ol>
 	<li>Anwendung herunterladen</a></li>
@@ -61,6 +62,8 @@ Beim Betrieb der Anwendung mit PHP 5.2.x und 5.3.[1-6] kommt es zu Darstellungsp
 	<code>gruppenraumbuchung/css/gruppenraeume.css</code> kann das Layout der Seite verändert werden.</li>
 	<li>Passen Sie die Templates <code>templates/rooms.tpl</code> und <code>templates/legend.tpl</code>an.</li>
 	<li>Passen Sie die Hinweistexte im Verzeichnis <code>info</code> an.</li>
+	<li>Die neueste Version von PHPMailer in den entsprechenden Ordner kopieren.</li>
+	<li>In der Datei <code>classes/class_room_reservation.php</code> die Funktion sendMail anpassen bzw. konfigurieren.</li>
 </ol>
 
 <br>

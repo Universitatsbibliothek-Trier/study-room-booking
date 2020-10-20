@@ -1,6 +1,6 @@
 <h4 id="legende-headline">%~legend%</h4>
-<p class="status-legende" style="border-left: 14px solid #9CCB5A">%~room_free% (Zentralbibliothek)</p>
-<p class="status-legende" style="border-left: 14px solid #7c9952">%~room_free% (Bereichsbibliothek)</p>
+<p class="status-legende" style="border-left: 14px solid #9CCB5A">%~room_free% (Campus I)</p>
+<p class="status-legende" style="border-left: 14px solid #7c9952">%~room_free% (Campus II)</p>
 <p class="status-legende" style="border-left: 14px solid orange">%~room_marked%</p>
 <p class="status-legende" style="border-left: 14px solid #DF2E3B">%~room_reserved%</p>
 %optional logged_in%

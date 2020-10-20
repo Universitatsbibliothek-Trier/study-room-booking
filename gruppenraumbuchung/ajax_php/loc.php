@@ -12,5 +12,5 @@ if(!isset($_POST["key_term"]))
 }
 else $key_term=$_POST["key_term"];
 
-echo utf8_encode(LOC::getLocale($key_term));
+echo LOC::getLocale($key_term);
 ?>

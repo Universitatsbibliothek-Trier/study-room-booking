@@ -1,4 +1,12 @@
 <?php 
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require $_SERVER['DOCUMENT_ROOT'] . '/raumbuchung/PHPMailer/src/Exception.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/raumbuchung/PHPMailer/src/PHPMailer.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/raumbuchung/PHPMailer/src/SMTP.php';
+
 class RoomReservation
 {
 	// Members
@@ -120,11 +128,23 @@ class RoomReservation
 		}
 		
 		$aktionszeit=date("YmdHis");
-					
-		$sql="INSERT INTO $table (login_id1, login_id2, datum, von, bis, raum, aktionszeit, status) VALUES ('$login_id1', '$login_id2', '$datum', '$von', '$bis', '$raum', '$aktionszeit', '$status')";
+		$department='';
+
+		$sql="INSERT INTO $table (login_id1, login_id2, department, datum, von, bis, raum, aktionszeit, status) VALUES ('$login_id1', '$login_id2', '$department', '$datum', '$von', '$bis', '$raum', '$aktionszeit', '$status')";
 		if($access->executeSQL($sql))
 		{
 			$response="ok";
+			
+			$text = "Sie haben am " . @Time::YmdToGermanDate($datum) . " den Gruppenarbeitsraum " . $this->getRoomTitleByNumber($raum) . " von " . @Time::HiToGermanTime($von) .  " bis " . @Time::HiToGermanTime($bis, true) .  " vorgemerkt. Sollte keine zweite Person mit Ihnen bis 24 Stunden vor dem Buchungstermin reservieren, verfällt Ihre Vormerkung. Sie erhalten eine Bestätigungsmail bei erfolgter Reservierung durch eine zweite Person.";			
+			 
+			if($this->sendMail($login_id1, $login_id2, $text))
+			{
+				$response = 'ok - Mail wurde gesendet';
+			}
+			else
+			{
+				$response = 'ok - Mail wurde NICHT gesendet';
+			}			
 		}
 		else $response=LOC::getLocale("alert_save_failed");
 
@@ -210,14 +230,43 @@ class RoomReservation
 		$datum=$data[0];
 		$von=$data[1];
 		$raum=$data[2];
+		$login_id1 = '';
+		$login_id2 = '';
 		
 		session_start();
 
-		if(isset($_SESSION["ub_user"])) $login_id2=$_SESSION["ub_user"];
-		else $login_id2="";
+		if(isset($_SESSION["ub_user"])) $login_id=$_SESSION["ub_user"];
+		else $login_id="";
 		
-		$sql="UPDATE $table SET status=1 WHERE datum='$datum' AND von='$von' AND raum='$raum' AND login_id2='$login_id2'";
-		if($access->executeSQL($sql)) $response="ok";
+		$sql="UPDATE $table SET status=1 WHERE datum='$datum' AND von='$von' AND raum='$raum' AND login_id2='$login_id'";
+		if($access->executeSQL($sql))
+		{			
+			$response="ok";	
+
+			$sql="SELECT * FROM $table WHERE datum='$datum' AND von='$von' AND raum='$raum' AND (login_id1='$login_id' OR login_id2='$login_id') LIMIT 1";
+			$access->executeSQL($sql);
+			if($access->rows)
+			{
+				for($t=0; $t < $access->rows; $t++)
+				{				
+					$login_id1=$access->db_data[$t]["login_id1"];
+					$login_id2=$access->db_data[$t]["login_id2"];
+					$dbVon=$access->db_data[$t]["von"];
+					$dbBis=$access->db_data[$t]["bis"];
+				}
+			}			
+			
+			$text = "Sie haben am " . @Time::YmdToGermanDate($datum) . " den Gruppenarbeitsraum " . $this->getRoomTitleByNumber($raum) . " von " . @Time::HiToGermanTime($dbVon) .  " bis " . @Time::HiToGermanTime($dbBis, true) .  " reserviert. Bitte beachten Sie innerhalb der Bibliothek die Pflicht zur Mund-Nase-Bedeckung, die derzeitigen Abstands- und Hygieneregeln sowie die von Ihnen bestätigten Nutzungsbedingungen zur maximalen Anzahl an Personen in Ihrem reservierten Raum.";			
+			 
+			if($this->sendMail($login_id1, $login_id2, $text))
+			{
+				$response = 'ok - Mail wurde gesendet';
+			}
+			else
+			{
+				$response = 'ok - Mail wurde NICHT gesendet';
+			}
+		}
 		else $response=LOC::getLocale("alert_confirmation_save_failed");
 		
 		return $response;
@@ -236,8 +285,21 @@ class RoomReservation
 		$datum=$data[0];
 		$von=$data[1];
 		$raum=$data[2];
+		$login_id1 = '';
+		$login_id2 = '';
 		
 		$status=$this->getStatus($datum, $von, $raum);
+		
+		$sql="SELECT * FROM $table WHERE datum='$datum' AND von='$von' AND raum='$raum' AND (login_id1='$login_id' OR login_id2='$login_id') LIMIT 1";
+		$access->executeSQL($sql);
+		if($access->rows)
+		{
+			for($t=0; $t < $access->rows; $t++)
+			{				
+				$login_id1=$access->db_data[$t]["login_id1"];
+				$login_id2=$access->db_data[$t]["login_id2"];
+			}
+		}
 		
 		$sql="DELETE FROM $table WHERE datum='$datum' AND von='$von' AND raum='$raum' AND (login_id1='$login_id' OR login_id2='$login_id') LIMIT 1";
 
@@ -245,12 +307,97 @@ class RoomReservation
 		{
 		    if($access->connection->affected_rows == 0) return 0;
 		    
-			if($status) $response=LOC::getLocale("alert_reservation_deleted");
-			else $response=LOC::getLocale("alert_marking_deleted");
+			if($status)
+			{
+				$response=LOC::getLocale("alert_reservation_deleted");				
+
+				$text = "Sie hatten den Gruppenarbeitsraum " . $this->getRoomTitleByNumber($raum) . " für den " . @Time::YmdToGermanDate($datum) . "  reserviert. Diese Reservierung wurde nun gelöscht.";
+				
+				if($login_id1 != '' && $login_id2 != '')
+				{
+					if($this->sendMail($login_id1, $login_id2, $text))
+					{
+						$response .= ' - Mail wurde gesendet';
+					}
+					else
+					{
+						$response .= ' - Mail wurde NICHT gesendet';
+					}
+				}
+			}
+			else 
+			{
+				$response=LOC::getLocale("alert_marking_deleted");				
+				
+				$text = "Sie hatten den Gruppenarbeitsraum " . $this->getRoomTitleByNumber($raum) . " für den " . @Time::YmdToGermanDate($datum) . "  vorgemerkt. Diese Vormerkung wurde nun gelöscht.";
+				 
+				if($this->sendMail($login_id1, $login_id2, $text))
+				{
+					$response .= ' - Mail wurde gesendet';
+				}
+				else
+				{
+					$response .= ' - Mail wurde NICHT gesendet';
+				}
+			}
 		}
 		else $response=0;
 		
 		return $response;
+	}
+	
+	function sendMail(string $emailTo1, string $emailTo2, string $mailContent):bool
+	{
+		// Mails senden an sich geht, bis zum Ende der Testphase daher keine Mails mehr senden
+		// return false;
+		
+		$host 			= '';
+		$port			= '';
+		$fromAddress 	= '';
+		$fromName		= '';
+		$subject 		= '';
+		$suffix 		= '';
+		
+		// Quellen/Hilfen: 
+		// https://github.com/PHPMailer/PHPMailer 
+		// https://stackoverflow.com/questions/48128618/how-to-use-phpmailer-without-composer
+		// https://www.php.de/forum/webentwicklung/php-einsteiger/1523776-phpmailer-anwenden
+		// https://stackoverflow.com/a/52553527
+		
+		// Sicherstellen, dass beide Werte befuellt sind und es nicht zu einer Mail an alle Uniangehoerige kommt
+		if($emailTo1 != '' && $emailTo2 != '')
+		{
+			$mail = new PHPMailer;
+			$mail->isSMTP(); 
+			$mail->SMTPDebug = 0; // 0 = off (for production use) - 1 = client messages - 2 = client and server messages
+			$mail->Host = gethostbyname($host); // if your network does not support SMTP over IPv6		
+			$mail->Port = $port;
+			$mail->SMTPAutoTLS = false;
+			$mail->SMTPSecure = false;
+			$mail->SMTPAuth = false;
+			$mail->setFrom($fromAddress, $fromName);
+			$mail->addAddress($emailTo1 . $suffix);
+			$mail->addAddress($emailTo2 . $suffix);
+			$mail->Subject = $subject;
+			$mail->CharSet = 'utf-8';
+			$mail->ContentType = 'text/plain';
+			$mail->IsHTML(false);
+			$mail->Body = $mailContent;
+
+			if(!$mail->send())
+			{
+				//echo "Mailer Error: " . $mail->ErrorInfo;
+				//echo "<script>console_log('" . $mail->ErrorInfo . "');</script>";
+				return false;
+			}
+			else
+			{
+				//echo "Message sent!";
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	function setAsExpired($data)

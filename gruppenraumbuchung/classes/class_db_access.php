@@ -29,7 +29,7 @@ class DB_Access
 			    $this->db_name=""; // Name der Datenbank
 			    $this->db_host=""; // Datenbank-Host
 			    $this->db_user=""; // Datenbank-User
-			    $this->db_password=""; // Passwordrd
+			    $this->db_password=""; // Password
 				
 				break;	
 		}
