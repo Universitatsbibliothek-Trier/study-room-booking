@@ -1,4 +1,4 @@
-<?php 
+<?php
 // Gruppenraumbuchung
 // Anwendung: gap
 // Lars Heuer - 03.2009/09.2011
@@ -17,15 +17,15 @@ $rr=new RoomReservation();
 $cookie_expires=10; //Config::getValue("days_until_cookie_expires");
 
 // Language setting
-if(isset($_GET["language"])) 
+if(isset($_GET["language"]))
 {
 	$language=$_GET["language"];
 }
-else if(isset($_COOKIE["gap_language"])) 
+else if(isset($_COOKIE["gap_language"]))
 {
 	$language=$_COOKIE["gap_language"];
 }
-else 
+else
 {
 	$language=LOC::getDefaultLanguage();
 }
@@ -72,7 +72,7 @@ if(isset($_GET['login']) or isset($_GET['logout']))
 	if(isset($_GET['logout'])) $ub_user=false;
 	else $ub_user=$auth->getUser();
 }
-else 
+else
 {
 	$ub_user=0;
 	$_SESSION["ub_user"]=$ub_user;
@@ -88,12 +88,12 @@ $javascript="<script language=\"javascript\" type=\"text/javascript\">\nvar segm
 $included=true;
 include("ajax_php/bookings.php");
 
-if(!$ub_user) 
+if(!$ub_user)
 {
 	$login_onclick="login()";
 	$login="Login";
 }
-else 
+else
 {
 	$login_onclick="logout()";
 	$login="Logout";
@@ -107,7 +107,7 @@ $output=$template->tplReplace($html, array(
                             "legend"=>$template->getTemplate("legend"),
                             "news"=>$template->getTemplate("news"),
                             "info_buttons"=>$template->getTemplate("info_buttons"),
-							"rooms"=>$template->getTemplate("rooms"),
+														"rooms"=>$template->getTemplate("rooms"),
                             "dialogs"=>$template->getTemplate("dialogs"),
                             "footer"=>$template->getTemplate("footer"),
                             "javascript"=>$javascript,
