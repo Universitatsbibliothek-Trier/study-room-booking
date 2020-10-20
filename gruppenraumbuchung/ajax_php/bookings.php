@@ -47,14 +47,18 @@ for($d=0; $d < $rr->days_in_advance; $d++)
 	$date_ymd=$rr->getDate($d, "Ymd");
 	$tpl_data[$d]["date_colspan"]=$rr->number_of_rooms;
 	$tpl_data[$d]["arbeitsplaetze"]="";
+	$tpl_data[$d]["userlimit"]="";
 	for($r=0; $r < $rr->number_of_rooms; $r++)
 	{
 		$room=$rr->rooms[$r]["number"];
 		$title=$rr->rooms[$r]["title"];
 		$location=$rr->rooms[$r]["location"];
-		$tpl_data[$d]["arbeitsplaetze"].="<th class=\"arbeitsplatz\" id=\"room-" . $date_ymd . "-" . $room . "\" title=\"$title\">" . "<img class=\"room-number\" src=\"images/raumnummern/" . $room . ".gif\">" . "</th>";
+		$userLimit=$rr->rooms[$r]["UserLimit"];
+	$tpl_data[$d]["arbeitsplaetze"].="<th style=\"position:relative;width:32px;height:40px\" class=\"arbeitsplatz\" id=\"room-" . $date_ymd . "-" . $room . "\" title=\"$title\"><div style=\"width:20px;\"><div style=\"transform:rotate(-90deg); white-space:nowrap; transform-origin:1ex .6ex; position:absolute; bottom:0px\">$title</div></div></th>";	
+	$tpl_data[$d]["userlimit"].="<th>$userLimit</th>";
 	}
 	$tpl_data[$d]["arbeitsplaetze"].="<td></td>";
+	$tpl_data[$d]["userlimit"].="<td></td>";
 }
 
 $reservation=$template->tplLoop($tpl_data, $reservation_tpl, "loop_datum");
@@ -68,6 +72,7 @@ if($rr->library_headlines)
 }
 
 $reservation=$template->tplLoop($tpl_data, $reservation, "loop_arbeitsplaetze");
+$reservation=$template->tplLoop($tpl_data, $reservation, "loop_userlimit");
 
 $tpl_data2=array();
 $tpl_data3=array();

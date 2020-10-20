@@ -5,7 +5,10 @@
 %~between% <span id="b-von"></span> %~and% <select id="bis" name="bis"></select>
 %~time_uhr%. <br />
 %~login_id_of_user% 2: <input type="text" id="login_id2"
-	name="login_id2"></p>
+	name="login_id2"><br>
+
+<table><tr><td><input type="checkbox" id="agree_tos"></td><td><label>Hiermit bestätige ich, dass ich den Raum nur mit der maximal vorgesehenen Anzahl von Personen nutze sowie die Abstands- und Hygieneregeln einhalte.</label></td></tr></table></p>
+
 <p id="error-alert" class="alert"></p>
 <button type="button" onclick="bookIt()">%~mark%</button>
 <input type="hidden" id="datum" name="datum"> <input type="hidden"
@@ -17,7 +20,8 @@
 <h3 id="c-headline">%~marking%</h3>
 <p>%~room% <span id="c-raum"></span>&nbsp;%~date_on% <span
 	id="c-datum"></span><br />
-%~time_from% <span id="c-von"></span>&nbsp;%~time_uhr%.</p>
+%~time_from% <span id="c-von"></span>&nbsp;%~time_uhr%.<br>
+<table><tr><td><input type="checkbox" id="cf-agree_tos"></td><td><label>Hiermit bestätige ich, dass ich den Raum nur mit der maximal vorgesehenen Anzahl von Personen nutze sowie die Abstands- und Hygieneregeln einhalte.</label></td></tr></table></p>
 <button id="c-confirm" type="button" onclick="confirmIt()" style="float: left; margin-right: 3px">%~confirm_marking%</button>
 <button id="c-print" type="button" onclick="printReceipt()" style="float: left; margin-right: 3px">%~print_receipt%</button>
 <button id="c-delete" type="button" onclick="deleteIt()">%~delete_marking%</button>

@@ -7,10 +7,11 @@ body {
 #head {
 	width: 100%;
 	height: 70px;
-	background-color: #0D59AB;
-	background-image: url(../images/uni-logo.gif);
+	background-color: #5580B3;
+	background-image: url(../images/uni-logo.png);
+	background-size: 250px 70px;
 	background-repeat: no-repeat;
-	background-position: -3px -7px;
+	background-position: left;
 }
 
 #head img {
@@ -45,13 +46,13 @@ h1 {
 
 #rb-container {
 	border: 1px solid #9CCB5A;
-	width: 749px;
+	width: 80%;
 	padding-bottom: 2px;
 	float: left;
 }
 
 #rb-scroll-container {
-	width: 670px;
+	width: auto;
 	overflow-x: scroll;
 }
 
@@ -95,7 +96,7 @@ table.raumbuchung tr th {
 }
 
 table.raumbuchung tr th.arbeitsplatz, table.raumbuchung tr th.zeitabschnitt {
-	background-color: #365F8C;
+	background-color: #5580B3;
 	color: #FFFFFF;
 	font-weight: normal;
 	width: 30px;
@@ -258,7 +259,7 @@ p#links-and-news span#news {
 	top: 0;
 	left: 0;
 	border: 1px solid #CCCCCC;
-	width: 300px;
+	width: 400px;
 	background-color: #FFFFFF;
 	font-size: 12px;
 	padding: 6px;

@@ -64,7 +64,7 @@ class Authentication
 					$template=new Template();
 					$login_html=$template->getTemplate("login");
 					
-					if($login == 2) $meldung="Login fehlgeschlagen. Bitte �berpr�fen Sie Ihre Zugangsdaten.";
+					if($login == 2) $meldung="Login fehlgeschlagen. Bitte überprüfen Sie Ihre Zugangsdaten.";
 					else $meldung="";
 					
 					$login_html=$template->tplReplace($login_html, array(
@@ -96,6 +96,7 @@ class Authentication
 	{
 		// Nur zu Testzwecken!
 		if(($login_id == "12345" or $login_id == "12346") and $password == "test") return true;
+		elseif(($login_id == "tester1" or $login_id == "tester2") and $password == "test") return true;
 		else return false;
 
 		/* Hier muss die lokale Authentifizierungsdatenbank (z. B. LDAP)
@@ -114,10 +115,8 @@ class Authentication
 		*/
 		$regex="!^[a-z]{4}[0-9]{4}$!";
 	
-		if(preg_match($regex, $login_id))
-		{
-			return true;
-		}
+		if(preg_match($regex, $login_id)) return true;
+		elseif($login_id == "tester1" or $login_id == "tester2") return true;
 		else return false;
 	}
 	

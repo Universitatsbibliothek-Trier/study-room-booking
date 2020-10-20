@@ -1,15 +1,18 @@
 <div id="rb-container">
 <table id="rb-uhrzeit" class="raumbuchung" style="float: left">
 	<tr>
-		<th class="datum">%~date%:</th>
-	</tr>
+		<!-- <th class="datum">%~date%:</th> -->
+		<th class="datum"><img src="images/schedule.png" style="height:24px;" title="Datum"></th>
+	</tr>	
 	%optional bibliotheken1%
-	<tr><th class="leerzelle-bibliotheken">&nbsp;</th></tr>
+	<tr style="display:none"><th class="leerzelle-bibliotheken">&nbsp;</th></tr>
 	%/optional bibliotheken1%
 	<tr>
-		<th class="arbeitsplatz-header">%~work_room%:</th>
+		<th class="arbeitsplatz-header" style="height:40px;"><img src="images/place.png" style="height:24px;" title="Standort"></th>
 	</tr>
-	
+	<tr>
+		<th><img src="images/community.png" style="height:24px;" title="Maximale Anzahl zugelassener Benutzer im Raum"></th>
+	</tr>
 	%loop_zeitabschnitte_uhrzeit%
 	<tr>
 		<th id="time-%period%" class="zeitabschnitt">%zeitabschnitt%</th>
@@ -29,7 +32,7 @@
 		%/loop_datum%
 	</tr>
 	%optional bibliotheken%
-	<tr class="bibliotheken-headline">
+	<tr style="display:none" class="bibliotheken-headline">
 	%loop_bibliotheken%
 		%bibliotheken_headlines%
 		<td></td>
@@ -39,9 +42,15 @@
 	<tr>
 		%loop_arbeitsplaetze% %arbeitsplaetze% %/loop_arbeitsplaetze%
 	</tr>
+	
+	<!-- Maximale Anzahl Personen in Raum -->
+	<tr style="text-align:center; height:24px;"> 
+		%loop_userlimit% %userlimit% %/loop_userlimit%
+	</tr>
+	
 	%loop_zeitabschnitte%
 	<tr>
-		%belegungen%
+		%belegungen%		
 	</tr>
 	%/loop_zeitabschnitte%
 </table>

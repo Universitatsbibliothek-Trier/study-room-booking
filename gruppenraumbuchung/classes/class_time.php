@@ -23,7 +23,7 @@ class Time
 		{
 			$german_months=array("01"=>"Januar",
 		      			  		 "02"=>"Februar",
-				       			 "03"=>"M�rz",
+				       			 "03"=>"März",
 							     "04"=>"April",
 							     "05"=>"Mai",
 							     "06"=>"Juni",
