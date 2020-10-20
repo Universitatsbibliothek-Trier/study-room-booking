@@ -34,21 +34,21 @@ Tests mit Version 7.x haben aber funktioniert.
 	<li>Im Skript <code>gruppenraumbuchung/classes/class_db_access.php</code> im Konstruktor (<code>function __construct</code>) die Zugangsdaten
 	für die neu eingerichtete Datenbank eintragen.</li>
 	<li>Die Anwendung im Browser starten (<code>index.php</code>). </li>
-	<li>Login ist im Testmodus über die Login-ID '12345' bzw. '12346' und das Passwort 'test' möglich. 
+	<li>Login ist im Testmodus über die Login-ID '12345' bzw. '12346' und das Passwort 'test' möglich.
 	Um den lokalen Authentifizierungsdienst (z. B. LDAP) zu integrieren, muss das Skript <code>gruppenraumbuchung/classes/class_authentication.php</code>
 	(Klassenmethode <code>accessGranted</code>) angepasst werden.</li>
 	<li>In der Datenbanktabelle <code>gap_rooms</code> werden die vorhandenen Gruppenarbeitsräume eingetragen.</li>
 	<li>In der Datenbanktabelle <code>gap_locations</code> wird/werden der Standort/die Standorte Ihrer Einrichtung eingetragen.</li>
 	<li>In der Datenbanktabelle <code>gap_ot</code> werden die Öffnungszeiten der Standorte angegeben.
 	Einträge ohne Werte für <code>datum_von</code> und <code>datum_bis</code> stellen die regulären Öffnungszeiten dar.</li>
-	<li>In der Datenbanktabelle <code>gap_ot_extradays</code> können einzelne Schließtage (ohne Uhrzeitangabe) bzw. Tage 
+	<li>In der Datenbanktabelle <code>gap_ot_extradays</code> können einzelne Schließtage (ohne Uhrzeitangabe) bzw. Tage
 	mit veränderten Öffnungszeiten eingetragen werden. Optional kann ein Eintrag auf einen Standort (<code>department</code>) begrenzt werden.
 	Vierstellige Einträge ohne Jahresangabe (z. B. 1003 = 03.10.) gelten für jedes Jahr.</li>
 	<li>In der Datenbanktabelle <code>gap_config</code> können Sie ggf. Änderungen an der Grundkonfiguration vornehmen. Erläuterungen
 	zu den einzelnen Punkten stehen im Feld <code>description</code>.</li>
 	<li>In der Datenbanktabelle <code>gap_localization</code> können Sie Änderungen an den Standardtexten der Anwendung vornehmen.
 	Es ist hier möglich, z. B. eine englischsprachige Version der Anwendung zu konfigurieren (URL-Parameter: language=en). Englischsprachige
-	Versionen der Hinweistexte, die sich nach Klick auf 'So funktioniert es' und 'Regeln' öffnen, liegen im Verzeichnis 
+	Versionen der Hinweistexte, die sich nach Klick auf 'So funktioniert es' und 'Regeln' öffnen, liegen im Verzeichnis
 	<code>gruppenraumbuchung/info</code> bereits vor.
 	</li>
 	<li>In der Datenbanktabelle <code>gap_admins</code> können Admin-Benutzer mit erweiterten Rechten eingetragen werden. Diese Benutzer dürfen
@@ -58,7 +58,7 @@ Tests mit Version 7.x haben aber funktioniert.
 			<li>über die normale Buchungsseite Räume reservieren, ohne dass ein zweiter Benutzer die Reservierung bestätigen muss.</li>
 		</ul>
 	</li>
-	<li>Durch Anpassung des Templates <code>gruppenraumbuchung/templates/header.tpl</code> und des Stylesheets 
+	<li>Durch Anpassung des Templates <code>gruppenraumbuchung/templates/header.tpl</code> und des Stylesheets
 	<code>gruppenraumbuchung/css/gruppenraeume.css</code> kann das Layout der Seite verändert werden.</li>
 	<li>Passen Sie die Templates <code>templates/rooms.tpl</code> und <code>templates/legend.tpl</code>an.</li>
 	<li>Passen Sie die Hinweistexte im Verzeichnis <code>info</code> an.</li>
